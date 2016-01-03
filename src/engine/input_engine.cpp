@@ -1,8 +1,8 @@
 #include "input_engine.h"
 
-InputEngine::InputEngine(){
-
-
+InputEngine::InputEngine(sf::RenderWindow &window) :
+mWindow(window)
+{
 }
 
 InputEngine::~InputEngine(){
@@ -10,11 +10,11 @@ InputEngine::~InputEngine(){
 }
 
 int InputEngine::GetMouseX(){
-  sf::Mouse::getPosition().x;
+  sf::Mouse::getPosition(mWindow).x;
 }
 
 int InputEngine::GetMouseY(){
-  sf::Mouse::getPosition().y;
+  sf::Mouse::getPosition(mWindow).y;
 }
 
 void InputEngine::SetMouse(int x,int y){
@@ -22,8 +22,31 @@ void InputEngine::SetMouse(int x,int y){
 }
 
 
+
 bool InputEngine::IsKeyPressed(sf::Keyboard::Key key){
-  return sf::Keyboard::isKeyPressed(key);
+  for(int i=0;i<mPressedKeys.size();i++){
+      if(mPressedKeys[i]==key){
+        return true;
+      }
+  }
+  return false;
 }
-// InputEngine::GetMouseV(){
-// }
+
+
+void InputEngine::ProcessEvents(sf::Event & event){
+  if(event.type == sf::Event::KeyPressed){
+    mPressedKeys.push_back(event.key.code);
+  }
+
+  if(event.type == sf::Event::KeyReleased){
+    for(int i=0;i<mPressedKeys.size();i++){
+      if(mPressedKeys[i]==event.key.code){
+        mPressedKeys.erase(mPressedKeys.begin()+i);
+      }
+    }
+  }
+
+
+}
+
+

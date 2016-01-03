@@ -31,6 +31,7 @@ public:
   int const GetLayer() const;
   void SetLayer(unsigned int layer);
   void Update(sf::Time clock);
+  bool ContainsPoint(float x,float y);
 
 private:
   int mID;
@@ -47,6 +48,7 @@ private:
   sf::Sprite mSprite;
   Visual & mVisual;
   thor::Animator<sf::Sprite, std::string> mAnimator;
+  sf::FloatRect mBoundingBox;
 };
 
 

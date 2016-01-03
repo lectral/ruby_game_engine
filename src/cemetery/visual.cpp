@@ -71,4 +71,3 @@ void Visual::AddAnimationFrame(std::string name,int x,int y,int h,int w){
   }
   LOG(DEBUG) << "New frame added";
 }
-

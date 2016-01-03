@@ -33,7 +33,7 @@ include_directories(include)
 include_directories(src)
 
 add_subdirectory(src)
-add_subdirectory(tests)
+#add_subdirectory(tests)
 
 
 include(add_catch_tests)
@@ -43,5 +43,5 @@ file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/main.cpp)
 add_executable(${TARGET_BINARY} ${PROJECT_SOURCE_DIR}/src/main.cpp)
 
 target_link_libraries(${TARGET_BINARY} ${ALL_LIBS} Engine)
-enable_testing()
-add_test(NAME "catch_tests" COMMAND catch_tests)
+#enable_testing()
+#add_test(NAME "catch_tests" COMMAND catch_tests)

@@ -25,6 +25,7 @@ public:
   std::vector<std::string> GetAnimationNames();
   std::vector<Animation>  GetAnimations();
   void AddAnimationFrame(std::string name,int x,int y,int h,int w);
+
 private:
   std::string mName;
   int mSizeX;

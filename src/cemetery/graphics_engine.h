@@ -4,8 +4,8 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "data_structs/texture_file.h"
-#include "visual.h"
-#include "physical.h"
+#include "data_structs/drawable.h"
+#include "data_structs/visual.h"
 
 
 class GraphicsEngine
@@ -22,19 +22,21 @@ public:
   int GetTextureCount();
   bool HiResTextures();
   sf::Texture & GetTexture(std::string name);
-  int AddVisual(std::string name,std::string texture);
-  Visual * GetVisual(int id);
-  int GetVisualCount();
-  Visual * GetVisual(std::string name);
+  int AddDrawable(std::string str_id,std::string texture, int layer);
+  void AddVisual(std::string name,std::string texture);
+  Drawable * GetDrawable(int id);
+  Drawable * GetDrawable(std::string id);
+  int GetDrawableCount();
+  Visual & GetVisual(std::string name);
   void Update(sf::Time time);
 private:
   void ExtractSizes(std::string input,unsigned int &x,unsigned int &y);
   std::vector<TextureFile> mTextures;
   sf::RenderWindow & mWindow;
+  std::vector<Drawable> mDrawables;
   std::vector<Visual> mVisuals;
-  int mVisualsIndex;
+  int mDrawablesIndex;
   bool m2Textures;
-  sf::RenderTexture mRenderTexture;
 
 };
 

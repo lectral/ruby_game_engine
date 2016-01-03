@@ -8,7 +8,7 @@ mStringID(str_id),
 mVisual(visual),
 mLayer(layer)
 {
-  mSprite.setTexture(mVisual.GetTexture());
+  mSprite.setTexture(mVisual.GetTexture(),true);
   std::vector<Animation> animations = mVisual.GetAnimations();
   for(int i=0;i<animations.size();i++){
     std::string name = animations[i].name;
@@ -24,7 +24,7 @@ mLayer(layer)
   //mAnimator.playAnimation("run");
   mRepeatAnimation = false;
   LOG(DEBUG) << "Drawable created ["<<mStringID<<"]["<<mID<<"]";
- 
+  mBoundingBox = mSprite.getGlobalBounds();
 }
 
 
@@ -105,6 +105,7 @@ float Drawable::GetPositionY(){
 void Drawable::Update(sf::Time clock){
   mAnimator.update(clock);
   mAnimator.animate(mSprite);
+  mBoundingBox = mSprite.getGlobalBounds();
 }
 
 sf::Sprite & Drawable::GetSprite(){
@@ -127,4 +128,9 @@ void Drawable::SetHidden(bool state){
 
 bool Drawable::IsHidden(){
   return mHidden;
+}
+
+
+bool Drawable::ContainsPoint(float x,float y){
+  mBoundingBox.contains(sf::Vector2f(x,y));
 }

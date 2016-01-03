@@ -1,11 +1,11 @@
 #include "engine/engine.h"
 #include <iostream>
-#include "data_structs/visual.h"
 
 Engine::Engine() : 
   mWindow(sf::VideoMode(640, 480, 32), "hack_game",sf::Style::Close),
   mSoundEngine(),
-  mGraphicsEngine(mWindow)
+  mGraphicsEngine(mWindow),
+  mInputEngine(mWindow)
 {
   //mShape.setFillColor(sf::Color::Green);
   mIsEngineRunning = false;
@@ -39,7 +39,6 @@ void Engine::Run(){
   mRubyBinding.Initialize();
 
   mSoundEngine.LoadSoundFiles();
-
   sf::Clock clock;
   sf::Clock tick;
   float lastTime = 0;
@@ -49,12 +48,14 @@ void Engine::Run(){
   while(mWindow.isOpen()){
     while(mWindow.pollEvent(mEvent)){
       if (mEvent.type == sf::Event::Closed) mWindow.close();
+      mInputEngine.ProcessEvents(mEvent);
     }
 
     GetSound().Update();
     mMouseXY = sf::Mouse::getPosition(mWindow);
     mWindow.clear();
     mRubyBinding.Update();
+    mEntityManager.Update();
     mGraphicsEngine.Update(clock.restart());
     mGraphicsEngine.Draw();
     mWindow.display();
@@ -89,4 +90,17 @@ MRubyBinding& Engine::GetBinding() {
 
 StringsManager& Engine::GetStrings() {
   return mStrings;
+}
+
+InputEngine& Engine::GetInput() {
+  return mInputEngine;
+}
+
+
+EntityManager& Engine::GetEntities() {
+  return mEntityManager;
+}
+
+PhysicsEngine& Engine::GetPhysics() {
+  return mPhysicsEngine;
 }

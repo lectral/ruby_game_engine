@@ -7,7 +7,8 @@
 #include <mruby/variable.h>
 #include <mruby/string.h>
 #include <string>
-//#include "app/app.h"
+
+// for helpers
 
 
 
@@ -26,6 +27,9 @@ public:
   void Initialize();
   void CloseMRuby();
 
+  //Helpers
+
+
 private:
   mrb_state * mMrb;
   mrb_value mValue;
@@ -34,7 +38,8 @@ private:
   //Binds
   static mrb_value play_sound(mrb_state *mrb,mrb_value self);
   static mrb_value log(mrb_state *mrb,mrb_value self);
-  static mrb_value create_drawable(mrb_state *mrb,mrb_value self);
+  static mrb_value create_entity(mrb_state *mrb,mrb_value self);
+  static mrb_value set_visual(mrb_state *mrb,mrb_value self);
   static mrb_value set_animation(mrb_state *mrb,mrb_value self);
   static mrb_value set_animation_repeat(mrb_state *mrb,mrb_value self);
   static mrb_value move_drawable(mrb_state *mrb,mrb_value self);
@@ -54,6 +59,10 @@ private:
   static mrb_value add_new_visual(mrb_state *mrb,mrb_value self);
   static mrb_value add_new_animation(mrb_state *mrb,mrb_value self);
   static mrb_value add_new_frame(mrb_state *mrb,mrb_value self);
+  static mrb_value is_key_pressed(mrb_state *mrb,mrb_value self);
+  static mrb_value mouse_pos_x(mrb_state *mrb,mrb_value self);
+  static mrb_value mouse_pos_y(mrb_state *mrb,mrb_value self);
+  static mrb_value drawable_contains_point(mrb_state *mrb,mrb_value self);
   //Binds
 
 
