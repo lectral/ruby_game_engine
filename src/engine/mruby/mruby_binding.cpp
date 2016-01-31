@@ -111,6 +111,8 @@ void MRubyBinding::BindCpp(){
   InstallFunction(get_frame_time,"cpp_get_frame_time");
   InstallFunction(add_bounding_box,"cpp_add_bounding_box");
   InstallFunction(set_text,"cpp_set_text");
+  InstallFunction(change_text,"cpp_change_text");
+  InstallFunction(get_current_fps,"cpp_get_current_fps");
   //Binds
 }
 
@@ -620,6 +622,15 @@ mrb_value MRubyBinding::set_text(mrb_state *mrb,mrb_value self){
   std::string content (mrb_string_value_cstr(mrb, &rb_string));
   Text * text = gApp.GetEngine().GetGraphics().AddText();
   gApp.GetEngine().GetEntities().GetEntity(rb_id).SetTexted(text);
+  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetTexted()->SetText(content);
+
+}
+
+MRUBY_FUNCTION_HEADER(change_text){
+  mrb_int rb_id;
+  mrb_value rb_string;
+  mrb_get_args(mrb, "iS", &rb_id, &rb_string);
+  std::string content(mrb_string_value_cstr(mrb, &rb_string));
   gApp.GetEngine().GetEntities().GetEntity(rb_id).GetTexted()->SetText(content);
 }
 

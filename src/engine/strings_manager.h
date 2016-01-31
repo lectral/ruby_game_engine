@@ -2,7 +2,6 @@
 #define STRINGS_MANAGER_H
 #include <string>
 #include <vector>
-#include <yaml-cpp/yaml.h>
 
 struct StringStruct {
    std::string name;

@@ -1,5 +1,4 @@
 #include "graphics_engine.h"
-#include <yaml-cpp/yaml.h>
 #include "easylogging++.h"
 #include <algorithm>
 #include <engine/entities/entity.h>
@@ -23,19 +22,6 @@ GraphicsEngine::~GraphicsEngine(){
 }
 
 
-void GraphicsEngine::LoadTexturesDb(std::string module){
-   std::ifstream fin("data/"+module+"/db/texture_db.yaml");
-   YAML::Parser parser(fin);
-   YAML::Node doc;
-   parser.GetNextDocument(doc);
-   for(unsigned i=0;i<doc.size();i++) {
-      std::string name;
-      std::string path;
-      doc[i]["name"] >> name;
-      doc[i]["path"] >> path;
-      mTextures.push_back(TextureFile(name,"data/"+module+"/textures/"+path));
-   }
-}
 
 void GraphicsEngine::AddTextureFile(std::string module,std::string name,std::string path){
    mTextures.push_back(TextureFile(name,"data/"+module+"/textures/"+path));

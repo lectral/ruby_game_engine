@@ -1,5 +1,4 @@
 #include "sound_engine.h"
-#include <yaml-cpp/yaml.h>
 #include "easylogging++.h"
 #include <algorithm>
 
@@ -32,25 +31,6 @@ float SoundEngine::GetMusicVolume() {
 
 float SoundEngine::GetSoundVolume() {
   return mSoundVolume;
-}
-
-
-
-void SoundEngine::LoadMusicFiles(std::string module){
-   std::string base_path = "data/"+module;
-   std::string audio_path = base_path+"/audio/";
-   std::string db_path = base_path+"/db/music_db.yaml";
-   std::ifstream fin(db_path);
-   YAML::Parser parser(fin);
-   YAML::Node doc;
-   parser.GetNextDocument(doc);
-   for(unsigned i=0;i<doc.size();i++) {
-      std::string name;
-      std::string path;
-      doc[i]["name"] >> name;
-      doc[i]["path"] >> path;
-      mMusicFiles.push_back(SoundFile(name,audio_path+path));
-   }
 }
 
 

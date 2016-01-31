@@ -41,10 +41,11 @@ int ConfigFile::GetResY(){
 
 void ConfigFile::Load(){
    std::ifstream fin(mPath);
-     YAML::Parser parser(fin);
-     YAML::Node doc;
-     parser.GetNextDocument(doc);
-     doc["resolution_x"] >> mResX;
-     doc["resolution_y"] >> mResY;
+     //YAML::Parser parser(fin);
+     //YAML::Node doc;
+     //parser.GetNextDocument(doc);
+     mResX = 1366;
+     mResY = 768;
      fin.close();
+     
 }

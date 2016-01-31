@@ -11,24 +11,24 @@ StringsManager::~StringsManager(){
 }
 
 
-void StringsManager::LoadStrings(std::string module){
-  ClearStrings();
-  std::ifstream fin("data/"+module+"/db/strings_db.yaml");
-  YAML::Parser parser(fin);
-  YAML::Node doc;
-  parser.GetNextDocument(doc);
-  for(unsigned i=0;i<doc.size();i++) {
-    std::string name;
-    std::string value;
-    StringStruct record;
-    doc[i]["name"] >> name;
-    doc[i][mCurrentLanguage] >> value;
-    //LOG(DEBUG) << "Loading string: "+name;
-    record.name = name;
-    record.value = value;
-    mStrings.push_back(record);
-   }
-}
+//void StringsManager::LoadStrings(std::string module){
+  //ClearStrings();
+  //std::ifstream fin("data/"+module+"/db/strings_db.yaml");
+  //YAML::Parser parser(fin);
+  //YAML::Node doc;
+  //parser.GetNextDocument(doc);
+  //for(unsigned i=0;i<doc.size();i++) {
+    //std::string name;
+    //std::string value;
+    //StringStruct record;
+    //doc[i]["name"] >> name;
+    //doc[i][mCurrentLanguage] >> value;
+    ////LOG(DEBUG) << "Loading string: "+name;
+    //record.name = name;
+    //record.value = value;
+    //mStrings.push_back(record);
+   //}
+//}
 
 
 void StringsManager::AddString(std::string name,std::string content){

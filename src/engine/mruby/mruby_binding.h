@@ -92,6 +92,7 @@ private:
   static mrb_value get_frame_time(mrb_state *mrb,mrb_value self);
   static mrb_value add_bounding_box(mrb_state *mrb,mrb_value self);
   static mrb_value set_text(mrb_state *mrb,mrb_value self);
+  static mrb_value change_text(mrb_state *mrb,mrb_value self);
   static mrb_value get_current_fps(mrb_state *mrb,mrb_value self);
   //Binds
 
