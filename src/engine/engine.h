@@ -1,15 +1,15 @@
 #ifndef ENGINE_CPP
 #define ENGINE_CPP
 #include <SFML/Graphics.hpp>
-#include "sound_engine.h"
+#include "engine/sounds/sound_engine.h"
 #include "easylogging++.h"
 #include "engine/strings_manager.h"
-#include "engine/input_engine.h"
-#include "engine/graphics_engine.h"
+#include "engine/input/input_engine.h"
+#include "engine/graphics/graphics_engine.h"
 #include "engine/game_engine.h"
-#include "engine/mruby_binding.h"
-#include "engine/entity_manager.h"
-#include "engine/physics_engine.h"
+#include "engine/mruby/mruby_binding.h"
+#include "engine/entities/entity_manager.h"
+#include "engine/physics/physics_engine.h"
 
 class Engine
 {
@@ -18,6 +18,7 @@ public:
   ~ Engine();
   void Run();
   void SetStartParameters(int res_x,int res_y);
+  void Stop();
   SoundEngine& GetSound();
   GraphicsEngine& GetGraphics();
   MRubyBinding& GetBinding();
@@ -25,6 +26,8 @@ public:
   InputEngine& GetInput();
   EntityManager & GetEntities();
   PhysicsEngine & GetPhysics();
+  sf::Time GetFrameTime();
+  int GetCurrentFPS();
 private:
   sf::RenderWindow mWindow;
   sf::Vector2i mMouseXY;
@@ -37,6 +40,8 @@ private:
   EntityManager mEntityManager;
   PhysicsEngine mPhysicsEngine;
   bool mIsEngineRunning;
+  sf::Time mFrameTime;
+  int mFPS;
 };
 
 

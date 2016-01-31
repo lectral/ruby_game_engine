@@ -6,9 +6,8 @@ Engine::Engine() :
   mSoundEngine(),
   mGraphicsEngine(mWindow),
   mInputEngine(mWindow)
-
 {
-  mWindow.setPosition(sf::Vector2i(-500,-500));
+  //mShape.setFillColor(sf::Color::Green);
   mIsEngineRunning = false;
 }
 
@@ -18,12 +17,12 @@ Engine::~Engine(){
 
 void Engine::SetStartParameters(int res_x,int res_y){
   mWindow.create(sf::VideoMode(res_x,res_y,32),"hack_game",sf::Style::Close);
-  mWindow.setPosition(sf::Vector2i(15,10));
 }
 
 
 void Engine::Run(){
-  LOG(DEBUG) << "Engine started!"; float test=0.1;
+  LOG(DEBUG) << "Engine started!";
+  float test=0.1;
   mIsEngineRunning = true;
   
   // Load
@@ -38,14 +37,13 @@ void Engine::Run(){
   sf::Clock frame_clock;
   sf::Clock tick;
   float lastTime = 0;
-  mFPS = 0;
+  int fps = 0;
   int frame_count = 0;
   mWindow.setFramerateLimit(120);
   auto physical_id = GetPhysics().AddPhysical();
   auto mouse_id = mEntityManager.AddEntity("ENGINE_MOUSE_CURSOR");
   mEntityManager.GetEntity(mouse_id).SetPhysical(GetPhysics().GetPhysical(physical_id));
-  mEntityManager.GetEntity(mouse_id).GetPhysical()->ClearBoundingBoxes();
-  mEntityManager.GetEntity(mouse_id).GetPhysical()->AddBoundingBox(POINT,sf::Vector2f(0,0));  
+  
   while(mWindow.isOpen() && mIsEngineRunning){
     while(mWindow.pollEvent(mEvent)){
       if (mEvent.type == sf::Event::Closed) mWindow.close();
@@ -60,8 +58,6 @@ void Engine::Run(){
     sf::Vector2f worldPos = mGraphicsEngine.GetRenderTexture().mapPixelToCoords(pixelPos);
 
     mEntityManager.GetEntity(mouse_id).GetPhysical()->SetPosition(worldPos.x-200,worldPos.y-200);
-    mEntityManager.GetEntity(mouse_id).GetPhysical()->ClearBoundingBoxes(); 
-    mEntityManager.GetEntity(mouse_id).GetPhysical()->AddBoundingBox(POINT,sf::Vector2f(worldPos.x-200,worldPos.y-200));  
     mWindow.clear();
 
     mRubyBinding.Update();
@@ -73,9 +69,9 @@ void Engine::Run(){
     lastTime += tick.getElapsedTime().asMilliseconds();
     if(lastTime>=1000){
       lastTime = 0;
-      mFPS = frame_count;
+      fps = frame_count;
       frame_count = 0;
-      LOG(INFO) << "frame count: "<<mFPS;
+      LOG(INFO) << "frame count: "<<fps;
     } 
 
     tick.restart();
@@ -123,9 +119,4 @@ void Engine::Stop(){
 
 sf::Time Engine::GetFrameTime(){
   return mFrameTime;
-}
-
-int Engine:: GetCurrentFPS(){
-
- return mFPS;
 }

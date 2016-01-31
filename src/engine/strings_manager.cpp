@@ -45,7 +45,9 @@ void StringsManager::ClearStrings(){
 }
 
 std::string StringsManager::GetString(std::string name){
+
   for(std::vector<StringStruct>::iterator it = mStrings.begin(); it != mStrings.end(); ++it) {
+    //LOG(DEBUG) << "fu: "<<it->name<<" against "<<name;
     if(it->name==name){
       return it->value;
     }

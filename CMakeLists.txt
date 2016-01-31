@@ -22,12 +22,13 @@ find_package(Mruby REQUIRED)
 find_package(YamlCpp REQUIRED)
 find_package(SFML 2.3 REQUIRED system window graphics audio)
 find_package(Thor REQUIRED)
+find_package(Box2d REQUIRED)
 
 #find_package(Boost)
 
-include_directories(${MRUBY_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${YAMLCPP_INCLUDE_DIR} ${THOR_INCLUDE_DIR})
+include_directories(${MRUBY_INCLUDE_DIR} ${SFML_INCLUDE_DIR} ${YAMLCPP_INCLUDE_DIR} ${BOX2D_INCLUDE_DIR} ${THOR_INCLUDE_DIR})
 
-set(ALL_LIBS ${LIBS} ${MRUBY_LIBRARIES} ${SFML_LIBRARIES} ${YAMLCPP_LIBRARY} ${THOR_LIBRARY})
+set(ALL_LIBS ${LIBS} ${MRUBY_LIBRARIES} ${SFML_LIBRARIES} ${YAMLCPP_LIBRARY} ${BOX2D_LIBRARY} ${THOR_LIBRARY}) 
 
 include_directories(include)
 include_directories(src)

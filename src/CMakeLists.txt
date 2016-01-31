@@ -1,6 +1,6 @@
 
 
-file(GLOB SOURCES "engine/*.cpp" "engine/data_structs/*.cpp" "app/*.cpp")
+file(GLOB SOURCES "engine/*.cpp" "engine/*/*.cpp" "app/*.cpp")
 add_library(Engine ${SOURCES})
 
 add_custom_target(
