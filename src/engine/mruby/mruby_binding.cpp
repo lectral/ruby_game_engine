@@ -113,6 +113,8 @@ void MRubyBinding::BindCpp(){
   InstallFunction(set_text,"cpp_set_text");
   InstallFunction(change_text,"cpp_change_text");
   InstallFunction(get_current_fps,"cpp_get_current_fps");
+  InstallFunction(set_text_size,"cpp_set_text_size");
+  InstallFunction(set_text_color,"cpp_set_text_color");
   //Binds
 }
 
@@ -637,3 +639,20 @@ MRUBY_FUNCTION_HEADER(change_text){
 MRUBY_FUNCTION_HEADER(get_current_fps){
   return mrb_fixnum_value(gApp.GetEngine().GetCurrentFPS());
 }
+
+MRUBY_FUNCTION_HEADER(set_text_size){
+  mrb_int rb_id;
+  mrb_int rb_size;
+  mrb_get_args(mrb, "ii", &rb_id, &rb_size);
+  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetTexted()->SetSize(rb_size);
+}
+
+MRUBY_FUNCTION_HEADER(set_text_color){
+  mrb_int rb_id;
+  mrb_int r;
+  mrb_int g;
+  mrb_int b;
+  mrb_get_args(mrb, "iiii", &rb_id,&r,&g,&b);
+  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetTexted()->SetColor(r,g,b);    
+}
+

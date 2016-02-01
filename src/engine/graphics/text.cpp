@@ -14,7 +14,6 @@ Text::~Text(){
 
 void Text::SetFont(sf::Font & font) {
   mText.setFont(font);
-  mText.setCharacterSize(100);
 }
 
 void Text::SetText(std::string text) {
@@ -23,6 +22,13 @@ void Text::SetText(std::string text) {
 
 void Text::AddText(std::string text) {
   mText.setString(mText.getString()+text);
+  
+}
+void Text::SetSize(unsigned int size) {
+  mText.setCharacterSize(size);
+}
+void Text::SetColor(int r,int g, int b){
+  mText.setColor(sf::Color(r,g,b));
 }
 
 void Text::Update() {

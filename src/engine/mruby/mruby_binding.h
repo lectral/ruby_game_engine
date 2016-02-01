@@ -94,6 +94,8 @@ private:
   static mrb_value set_text(mrb_state *mrb,mrb_value self);
   static mrb_value change_text(mrb_state *mrb,mrb_value self);
   static mrb_value get_current_fps(mrb_state *mrb,mrb_value self);
+  static mrb_value set_text_size(mrb_state *mrb,mrb_value self);
+  static mrb_value set_text_color(mrb_state *mrb,mrb_value self);
   //Binds
 
 
