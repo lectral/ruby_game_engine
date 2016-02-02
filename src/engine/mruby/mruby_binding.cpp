@@ -64,6 +64,9 @@ void MRubyBinding::LoadEntryPoint(std::string file){
 }
 
 
+Entity * MRubyBinding::GetCurrentEntity(){
+  return mCurrentEntity;
+}
 
 void MRubyBinding::BindCpp(){
   //Binds
@@ -139,6 +142,7 @@ void MRubyBinding::InstallFunction(mrb_func_t func,std::string func_name){
 
 void MRubyBinding::Update(){
   for(auto it = mScripted.begin();it != mScripted.end();++it){
+    mCurrentEntity = it->GetOwner();
     it->ExecuteUpdate(mMrb);
   }
 }
@@ -216,7 +220,7 @@ mrb_value MRubyBinding::set_animation(mrb_state *mrb,mrb_value self){
   mrb_value arg2;
   mrb_get_args(mrb, "iS", &rb_id,&arg2);
   std::string animation(mrb_string_value_cstr(mrb, &arg2));
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetVisual()->PlayAnimation(animation);
+  CURRENT_ENTITY->GetVisual()->PlayAnimation(animation);
   return mrb_nil_value();
 }
 
@@ -224,7 +228,7 @@ mrb_value MRubyBinding::set_animation_repeat(mrb_state *mrb,mrb_value self){
   mrb_int rb_id=0;
   mrb_bool rb_state;
   mrb_get_args(mrb, "ib", &rb_id,&rb_state);
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetVisual()->SetRepeatAnimation(rb_state);
+  CURRENT_ENTITY->GetVisual()->SetRepeatAnimation(rb_state);
   return mrb_nil_value();
 }
 
@@ -233,7 +237,7 @@ mrb_value MRubyBinding::move_drawable(mrb_state *mrb,mrb_value self){
   mrb_float rb_x;
   mrb_float rb_y;
   mrb_get_args(mrb, "iff", &rb_id,&rb_x,&rb_y);
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->Move(rb_x,rb_y);
+  CURRENT_ENTITY->GetPhysical()->Move(rb_x,rb_y);
   return mrb_nil_value();
 }
 
@@ -242,7 +246,7 @@ mrb_value MRubyBinding::set_position(mrb_state *mrb,mrb_value self){
   mrb_float rb_x;
   mrb_float rb_y;
   mrb_get_args(mrb, "iff", &rb_id,&rb_x,&rb_y);
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->SetPosition(rb_x,rb_y);
+  CURRENT_ENTITY->GetPhysical()->SetPosition(rb_x,rb_y);
 
   return mrb_nil_value();
 }
@@ -254,7 +258,7 @@ mrb_value MRubyBinding::rotate_drawable(mrb_state *mrb,mrb_value self){
   mrb_int rb_id=0;
   mrb_float rb_rotation;
   mrb_get_args(mrb, "if", &rb_id,&rb_rotation);
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->Rotate(rb_rotation);
+  CURRENT_ENTITY->GetPhysical()->Rotate(rb_rotation);
   return mrb_nil_value();
 }
 
@@ -264,7 +268,7 @@ mrb_value MRubyBinding::set_drawable_rotation(mrb_state *mrb,mrb_value self){
   mrb_int rb_id=0;
   mrb_float rb_rotation;
   mrb_get_args(mrb, "if", &rb_id,&rb_rotation);
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->SetRotation(rb_rotation);
+  CURRENT_ENTITY->GetPhysical()->SetRotation(rb_rotation);
   return mrb_nil_value();
 }
 
@@ -273,7 +277,7 @@ mrb_value MRubyBinding::hide_drawable(mrb_state *mrb,mrb_value self){
   mrb_int rb_id=0;
   mrb_bool rb_state;
   mrb_get_args(mrb, "ib", &rb_id,&rb_state);
-   gApp.GetEngine().GetEntities().GetEntity(rb_id).GetVisual()->SetHidden(rb_state);
+   CURRENT_ENTITY->GetVisual()->SetHidden(rb_state);
   return mrb_nil_value();
 }
 
@@ -487,7 +491,7 @@ mrb_value MRubyBinding::check_collision(mrb_state *mrb,mrb_value self){
   mrb_value rb_entity;
   mrb_get_args(mrb, "iS", &rb_id,&rb_entity);
   std::string entity(mrb_string_value_cstr(mrb, &rb_entity));
-  bool ret = gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->CollidedWith(entity);
+  bool ret = CURRENT_ENTITY->GetPhysical()->CollidedWith(entity);
 
   return mrb_bool_value(ret);
 }
@@ -509,7 +513,7 @@ mrb_value MRubyBinding::get_position_x(mrb_state *mrb,mrb_value self){
   mrb_int rb_id=0;
   mrb_get_args(mrb, "i", &rb_id);
 
-  float pos = gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->GetPosition().x;
+  float pos = CURRENT_ENTITY->GetPhysical()->GetPosition().x;
 
   LOG(DEBUG) << pos;
 
@@ -520,7 +524,7 @@ mrb_value MRubyBinding::get_position_y(mrb_state *mrb,mrb_value self){
   mrb_int rb_id=0;
   mrb_get_args(mrb, "i", &rb_id);
   //std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
-  float pos = gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->GetPosition().y;
+  float pos = CURRENT_ENTITY->GetPhysical()->GetPosition().y;
   //std::chrono::high_resolution_clock::time_point t2 = std::chrono::high_resolution_clock::now();
   //LOG(DEBUG) << "GetEntity time: " <<std::chrono::duration_cast<std::chrono::microseconds>( t2 - t1 ).count();
   return mrb_float_value(mrb,pos);
@@ -552,7 +556,7 @@ mrb_value MRubyBinding::set_layer(mrb_state *mrb,mrb_value self){
   mrb_int rb_id=0;
   mrb_int rb_layer=0;
   mrb_get_args(mrb, "ii", &rb_id, &rb_layer);
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetVisual()->SetLayer(rb_layer);
+  CURRENT_ENTITY->GetVisual()->SetLayer(rb_layer); 
   return mrb_nil_value();
 }
 
@@ -561,9 +565,10 @@ mrb_value MRubyBinding::set_text_layer(mrb_state *mrb,mrb_value self){
   mrb_int rb_id=0;
   mrb_int rb_layer=0;
   mrb_get_args(mrb, "ii", &rb_id, &rb_layer);
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetTexted()->SetLayer(rb_layer);
+  CURRENT_ENTITY->GetTexted()->SetLayer(rb_layer);
   return mrb_nil_value();
 }
+
 mrb_value MRubyBinding::move_view(mrb_state *mrb,mrb_value self){
   mrb_float rb_x;
   mrb_float rb_y;
@@ -605,13 +610,13 @@ mrb_value MRubyBinding::add_bounding_box(mrb_state *mrb,mrb_value self){
       }
     }
   BoundingBoxType type = static_cast<BoundingBoxType>(rb_type); switch(type){ case CIRCLE:
-      gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->AddBoundingBox((static_cast<BoundingBoxType>(rb_type)),b);
+      CURRENT_ENTITY->GetPhysical()->AddBoundingBox((static_cast<BoundingBoxType>(rb_type)),b);
     break;
     case POINT:
-      gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->AddBoundingBox((static_cast<BoundingBoxType>(rb_type)),a);
+      CURRENT_ENTITY->GetPhysical()->AddBoundingBox((static_cast<BoundingBoxType>(rb_type)),a);
     break;
     case RECT:  
-      gApp.GetEngine().GetEntities().GetEntity(rb_id).GetPhysical()->AddBoundingBox((static_cast<BoundingBoxType>(rb_type)),c);
+      CURRENT_ENTITY->GetPhysical()->AddBoundingBox((static_cast<BoundingBoxType>(rb_type)),c);
     break;
     }
 
@@ -633,7 +638,7 @@ MRUBY_FUNCTION_HEADER(change_text){
   mrb_value rb_string;
   mrb_get_args(mrb, "iS", &rb_id, &rb_string);
   std::string content(mrb_string_value_cstr(mrb, &rb_string));
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetTexted()->SetText(content);
+  CURRENT_ENTITY->GetTexted()->SetText(content);
 }
 
 MRUBY_FUNCTION_HEADER(get_current_fps){
@@ -644,7 +649,7 @@ MRUBY_FUNCTION_HEADER(set_text_size){
   mrb_int rb_id;
   mrb_int rb_size;
   mrb_get_args(mrb, "ii", &rb_id, &rb_size);
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetTexted()->SetSize(rb_size);
+  CURRENT_ENTITY->GetTexted()->SetSize(rb_size);
 }
 
 MRUBY_FUNCTION_HEADER(set_text_color){
@@ -653,6 +658,6 @@ MRUBY_FUNCTION_HEADER(set_text_color){
   mrb_int g;
   mrb_int b;
   mrb_get_args(mrb, "iiii", &rb_id,&r,&g,&b);
-  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetTexted()->SetColor(r,g,b);    
+  CURRENT_ENTITY->GetTexted()->SetColor(r,g,b);    
 }
 

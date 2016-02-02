@@ -14,6 +14,7 @@
 // for helpers
 
 #define MRUBY_FUNCTION_HEADER(X) mrb_value MRubyBinding::X(mrb_state *mrb,mrb_value self)
+#define CURRENT_ENTITY gApp.GetEngine().GetBinding().GetCurrentEntity()
 
 class SoundEngine;
 
@@ -34,7 +35,7 @@ public:
   void CloseMRuby();
   void LoadModule(std::string name);
   void LoadDb(std::string name);
-
+  Entity * GetCurrentEntity();
   //Helpers
 
 
@@ -46,6 +47,8 @@ private:
   std::list<Scripted> mScripted;
   unsigned int mScriptsIndex;
   unsigned int mScriptedIndex;
+  
+  Entity * mCurrentEntity;
 
   //Binds
   static mrb_value play_sound(mrb_state *mrb,mrb_value self);
