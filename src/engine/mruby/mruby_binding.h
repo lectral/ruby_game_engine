@@ -36,6 +36,7 @@ public:
   void LoadModule(std::string name);
   void LoadDb(std::string name);
   Entity * GetCurrentEntity();
+  void SetCurrentEntity(Entity * entity);
   //Helpers
 
 
@@ -99,6 +100,7 @@ private:
   static mrb_value get_current_fps(mrb_state *mrb,mrb_value self);
   static mrb_value set_text_size(mrb_state *mrb,mrb_value self);
   static mrb_value set_text_color(mrb_state *mrb,mrb_value self);
+  static mrb_value get_object(mrb_state *mrb,mrb_value self);
   //Binds
 
 

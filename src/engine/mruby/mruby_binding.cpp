@@ -68,6 +68,10 @@ Entity * MRubyBinding::GetCurrentEntity(){
   return mCurrentEntity;
 }
 
+void MRubyBinding::SetCurrentEntity(Entity * entity){
+  mCurrentEntity = entity;
+}
+
 void MRubyBinding::BindCpp(){
   //Binds
   InstallFunction(play_sound,"cpp_play_sound");
@@ -118,6 +122,7 @@ void MRubyBinding::BindCpp(){
   InstallFunction(get_current_fps,"cpp_get_current_fps");
   InstallFunction(set_text_size,"cpp_set_text_size");
   InstallFunction(set_text_color,"cpp_set_text_color");
+  InstallFunction(get_object,"cpp_get_object");
   //Binds
 }
 
@@ -200,6 +205,7 @@ mrb_value MRubyBinding::create_entity(mrb_state *mrb,mrb_value self){
   std::string name(mrb_string_value_cstr(mrb,&arg1));
   unsigned int physical_id = gApp.GetEngine().GetPhysics().AddPhysical();
   int ret_id = gApp.GetEngine().GetEntities().AddEntity(name);
+  gApp.GetEngine().GetBinding().SetCurrentEntity(&gApp.GetEngine().GetEntities().GetEntity(ret_id));
   gApp.GetEngine().GetEntities().GetEntity(ret_id).SetPhysical(gApp.GetEngine().GetPhysics().GetPhysical(physical_id));
   return mrb_fixnum_value(ret_id);
 }
@@ -220,7 +226,7 @@ mrb_value MRubyBinding::set_animation(mrb_state *mrb,mrb_value self){
   mrb_value arg2;
   mrb_get_args(mrb, "iS", &rb_id,&arg2);
   std::string animation(mrb_string_value_cstr(mrb, &arg2));
-  CURRENT_ENTITY->GetVisual()->PlayAnimation(animation);
+  gApp.GetEngine().GetEntities().GetEntity(rb_id).GetVisual()->PlayAnimation(animation);
   return mrb_nil_value();
 }
 
@@ -515,7 +521,6 @@ mrb_value MRubyBinding::get_position_x(mrb_state *mrb,mrb_value self){
 
   float pos = CURRENT_ENTITY->GetPhysical()->GetPosition().x;
 
-  LOG(DEBUG) << pos;
 
   return mrb_float_value(mrb,pos);
 }
@@ -577,11 +582,11 @@ mrb_value MRubyBinding::move_view(mrb_state *mrb,mrb_value self){
   return mrb_nil_value();
 }
 
-mrb_value MRubyBinding::get_frame_time(mrb_state *mrb,mrb_value self){
+MRUBY_FUNCTION_HEADER(get_frame_time){
   return mrb_float_value(mrb,gApp.GetEngine().GetFrameTime().asSeconds());
 }
 
-mrb_value MRubyBinding::add_bounding_box(mrb_state *mrb,mrb_value self){
+MRUBY_FUNCTION_HEADER(add_bounding_box){
   mrb_int rb_id;
   mrb_int rb_type;
   mrb_value rb_array;
@@ -622,7 +627,7 @@ mrb_value MRubyBinding::add_bounding_box(mrb_state *mrb,mrb_value self){
 
   }
 
-mrb_value MRubyBinding::set_text(mrb_state *mrb,mrb_value self){
+MRUBY_FUNCTION_HEADER(set_text){
   mrb_int rb_id;
   mrb_value rb_string;
   mrb_get_args(mrb, "iS", &rb_id, &rb_string);
@@ -661,3 +666,10 @@ MRUBY_FUNCTION_HEADER(set_text_color){
   CURRENT_ENTITY->GetTexted()->SetColor(r,g,b);    
 }
 
+MRUBY_FUNCTION_HEADER(get_object){
+  mrb_int rb_id;
+  mrb_get_args(mrb,"i", &rb_id); 
+  return gApp.GetEngine().GetEntities().GetEntity(rb_id).GetScripted()->GetScriptObject();  
+
+
+}
