@@ -1,5 +1,5 @@
 #include "catch.hpp"
-#include "engine/graphics_engine.h"
+#include "engine/graphics/graphics_engine.h"
 #include "SFML/Graphics.hpp"
 #include "easylogging++.h"
 
@@ -33,35 +33,19 @@ TEST_CASE("graphics_engine_loading","[loading]"){
 }
 
 
-TEST_CASE("graphics_engine_drawbles","[drawables]"){
+TEST_CASE("graphics_engine_visuals","visual"){
 
-  SECTION("add drawables"){
-    sf::RenderWindow a(sf::VideoMode(640, 480, 32), "test",sf::Style::Close);
-    GraphicsEngine engine(a);
-    LOG(DEBUG) << "test-1";
-
-    engine.LoadTexturesDb("core");
-    engine.LoadTexture("DUMMY");
-    engine.LoadVisuals("core");
-    engine.AddDrawable("TEST1","DUMMY",2);
-    engine.AddDrawable("TEST2","DUMMY",3);
-    engine.AddDrawable("TEST3","DUMMY",3);
-    REQUIRE(engine.GetDrawableCount() == 3);
-  }
-
-
-  SECTION("change property of drawables"){
+  SECTION("adding visuals"){
     sf::RenderWindow a(sf::VideoMode(640, 480, 32), "test",sf::Style::Close);
     GraphicsEngine engine(a);
     engine.LoadTexturesDb("core");
     engine.LoadTexture("DUMMY");
     engine.LoadVisuals("core");
-    engine.AddDrawable("TEST1","DUMMY",2);
-    engine.AddDrawable("TEST2","DUMMY",3);
-    engine.GetDrawable(0)->SetPosition(10,10);
-    REQUIRE(engine.GetDrawable(0)->GetPositionX() == 10);
+    engine.AddVisual("TEST1","DUMMY");
+    engine.AddVisual("TEST2","DUMMY");
+    engine.AddVisual("TEST3","DUMMY");
+    REQUIRE(engine.GetVisualCount() == 3);
   }
-
 
 }
 

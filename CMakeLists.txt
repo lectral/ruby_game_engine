@@ -46,3 +46,4 @@ add_executable(${TARGET_BINARY} ${PROJECT_SOURCE_DIR}/src/main.cpp)
 target_link_libraries(${TARGET_BINARY} ${ALL_LIBS} Engine)
 #enable_testing()
 #add_test(NAME "catch_tests" COMMAND catch_tests)
+
