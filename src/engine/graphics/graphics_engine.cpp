@@ -99,18 +99,12 @@ for(auto it= mVisuals.begin(); it != mVisuals.end(); ++it) {
 
 
 void GraphicsEngine::Draw(){
- mRenderTexture.clear();
- mWindow.clear();
- mRenderTexture.setView(mMainView);
- sf::Text my_text;
- my_text.setFont(mFont);
- my_text.setCharacterSize(50);
- my_text.setColor(sf::Color::Red); 
- my_text.setPosition(250,250);
- my_text.setString("DUPA3");
- for(int l=99;l>0;l--){
- 
-   for(auto it = mDrawables.begin(); it != mDrawables.end(); ++it) {
+  mRenderTexture.clear();
+  mWindow.clear();
+  mRenderTexture.setView(mMainView);
+  for(int l=99;l>0;l--){
+
+    for(auto it = mDrawables.begin(); it != mDrawables.end(); ++it) {
       if((*it)->GetLayer()==l){
         if((*it)->IsHidden()) continue;
         //sf::Vector2f worldPos = mWindow.mapPixelToCoords((*it)->GetCoords());
@@ -121,17 +115,17 @@ void GraphicsEngine::Draw(){
         mRenderTexture.draw(*((*it)->GetDrawable()));
       }
     }
-   for (auto it = mTexts.begin(); it != mTexts.end(); ++it) {
-     if(it->IsHidden()) continue;
-     if(it->GetLayer() == l){
-       sf::Vector2f a;
-       a.x = 200;
-       a.y = 200;
-       it->UpdateCoords(a);
-       mRenderTexture.draw(*(it->GetDrawable()));       
-       
-     } 
-   }
+    for (auto it = mTexts.begin(); it != mTexts.end(); ++it) {
+      if(it->IsHidden()) continue;
+      if(it->GetLayer() == l){
+        sf::Vector2f a;
+        a.x = 200;
+        a.y = 200;
+        it->UpdateCoords(a);
+        mRenderTexture.draw(*(it->GetDrawable()));       
+
+      } 
+    }
   }
 
   //mRenderTexture.draw(my_text);

@@ -56,10 +56,3 @@ void Text::UpdateFromPhysical(Physical * physical) {
 }
 
 
-
-
-
-
-
-
-

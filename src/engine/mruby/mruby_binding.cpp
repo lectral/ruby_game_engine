@@ -158,7 +158,6 @@ void MRubyBinding::LoadModule(std::string name){
   mrb_value obj;
   obj = mrb_funcall(mMrb, mrb_top_self(mMrb), "on_load", 0);
    if (mMrb->exc) {
-    // Error
     obj = mrb_funcall(mMrb, mrb_obj_value(mMrb->exc), "inspect", 0);
     LOG(ERROR) << "Module: "+name+" failed on load";
     LOG(ERROR) << RSTRING_PTR(obj);
