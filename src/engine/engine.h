@@ -29,6 +29,8 @@ public:
   sf::Time GetFrameTime();
   int GetCurrentFPS();
 private:
+  void AddEngineCursor();
+  int mCursorId;
   sf::RenderWindow mWindow;
   sf::Vector2i mMouseXY;
   sf::Event mEvent;

@@ -23,7 +23,9 @@ void Engine::SetStartParameters(int res_x,int res_y){
 
 
 void Engine::Run(){
-  LOG(DEBUG) << "Engine started!"; float test=0.1;
+  LOG(DEBUG) << "Engine started!"; 
+  float test=0.1;
+
   mIsEngineRunning = true;
   
   // Load
@@ -41,11 +43,7 @@ void Engine::Run(){
   mFPS = 0;
   int frame_count = 0;
   mWindow.setFramerateLimit(120);
-  auto physical_id = GetPhysics().AddPhysical();
-  auto mouse_id = mEntityManager.AddEntity("ENGINE_MOUSE_CURSOR");
-  mEntityManager.GetEntity(mouse_id).SetPhysical(GetPhysics().GetPhysical(physical_id));
-  mEntityManager.GetEntity(mouse_id).GetPhysical()->ClearBoundingBoxes();
-  mEntityManager.GetEntity(mouse_id).GetPhysical()->AddBoundingBox(POINT,sf::Vector2f(0,0));  
+  AddEngineCursor();
   while(mWindow.isOpen() && mIsEngineRunning){
     while(mWindow.pollEvent(mEvent)){
       if (mEvent.type == sf::Event::Closed) mWindow.close();
@@ -59,9 +57,9 @@ void Engine::Run(){
     sf::Vector2i pixelPos = sf::Mouse::getPosition(mWindow);
     sf::Vector2f worldPos = mGraphicsEngine.GetRenderTexture().mapPixelToCoords(pixelPos);
 
-    mEntityManager.GetEntity(mouse_id).GetPhysical()->SetPosition(worldPos.x-200,worldPos.y-200);
-    mEntityManager.GetEntity(mouse_id).GetPhysical()->ClearBoundingBoxes(); 
-    mEntityManager.GetEntity(mouse_id).GetPhysical()->AddBoundingBox(POINT,sf::Vector2f(worldPos.x-200,worldPos.y-200));  
+    mEntityManager.GetEntity(mCursorId).GetPhysical()->SetPosition(worldPos.x-200,worldPos.y-200);
+    mEntityManager.GetEntity(mCursorId).GetPhysical()->ClearBoundingBoxes(); 
+    mEntityManager.GetEntity(mCursorId).GetPhysical()->AddBoundingBox(POINT,sf::Vector2f(worldPos.x-200,worldPos.y-200));  
     mWindow.clear();
 
     mRubyBinding.Update();
@@ -75,7 +73,7 @@ void Engine::Run(){
       lastTime = 0;
       mFPS = frame_count;
       frame_count = 0;
-      LOG(INFO) << "frame count: "<<mFPS;
+      LOG(INFO) << "FPS: "<< mFPS;
     } 
 
     tick.restart();
@@ -84,6 +82,14 @@ void Engine::Run(){
   mIsEngineRunning = false;
   LOG(INFO) << "Shutdown complete.";
 
+}
+
+void Engine::AddEngineCursor(){
+  auto physical_id = GetPhysics().AddPhysical();
+  mCursorId = mEntityManager.AddEntity("ENGINE_MOUSE_CURSOR");
+  mEntityManager.GetEntity(mCursorId).SetPhysical(GetPhysics().GetPhysical(physical_id));
+  mEntityManager.GetEntity(mCursorId).GetPhysical()->ClearBoundingBoxes();
+  mEntityManager.GetEntity(mCursorId).GetPhysical()->AddBoundingBox(POINT,sf::Vector2f(0,0));  
 }
 
 

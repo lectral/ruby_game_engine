@@ -13,4 +13,4 @@ let g:syntastic_cpp_include_dirs = ['src/engine/','src/app']
 let g:syntastic_cpp_compiler = 'gcc'
 let g:syntastic_cpp_compiler_options = ' -std=c++11'
 
-
+set wildignore+=*.o,*.so,*.swp 

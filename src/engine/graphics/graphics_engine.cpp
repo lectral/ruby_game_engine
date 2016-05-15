@@ -107,23 +107,13 @@ void GraphicsEngine::Draw(){
     for(auto it = mDrawables.begin(); it != mDrawables.end(); ++it) {
       if((*it)->GetLayer()==l){
         if((*it)->IsHidden()) continue;
-        //sf::Vector2f worldPos = mWindow.mapPixelToCoords((*it)->GetCoords());
-        sf::Vector2f a;
-        a.x = 200;
-        a.y = 200;
-        (*it)->UpdateCoords(a);
         mRenderTexture.draw(*((*it)->GetDrawable()));
       }
     }
     for (auto it = mTexts.begin(); it != mTexts.end(); ++it) {
       if(it->IsHidden()) continue;
       if(it->GetLayer() == l){
-        sf::Vector2f a;
-        a.x = 200;
-        a.y = 200;
-        it->UpdateCoords(a);
-        mRenderTexture.draw(*(it->GetDrawable()));       
-
+       mRenderTexture.draw(*(it->GetDrawable()));       
       } 
     }
   }
@@ -131,7 +121,6 @@ void GraphicsEngine::Draw(){
   //mRenderTexture.draw(my_text);
   sf::Sprite sprite(mRenderTexture.getTexture());
   mRenderTexture.display();
-  
   mWindow.draw(sprite);
 }
 
@@ -155,7 +144,7 @@ void GraphicsEngine::ExtractSizes(std::string input,unsigned int &x,unsigned int
 void  GraphicsEngine::Update(sf::Time time){
   if(mWindow.getSize().x != mRenderTexture.getSize().x){
     mRenderTexture.create(mWindow.getSize().x,mWindow.getSize().y);
-    mMainView.reset(sf::FloatRect(200,200,mWindow.getSize().x,mWindow.getSize().y));
+    mMainView.reset(sf::FloatRect(0,0,mWindow.getSize().x,mWindow.getSize().y));
 
   }
   for(auto it = mDrawables.begin();it != mDrawables.end();++it) {
